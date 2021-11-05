@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -15,26 +16,83 @@ function App() {
 	// console.log(nayokNames);
 	return (
 		<div className='App'>
+			<header className='App-header'>
+				<Users></Users>
+				<Counter></Counter>
+				<ul>
+					{nayoks.map((nayok) => (
+						<li>{nayok}</li>
+					))}
+
+					{products.map((product) => (
+						<li>{product.name}</li>
+					))}
+				</ul>
+
+				{/* {products.map((pd) => (
+					<Product product={pd}></Product>
+					
+				))} */}
+				<Product
+					name={products[0].name}
+					price={products[0].price}></Product>
+				<Product
+					name={products[1].name}
+					price={products[1].price}></Product>
+				<Product
+					name={products[2].name}
+					price={products[2].price}></Product>
+				<Person name='Tina Khan' age='20'></Person>
+				<Person name='Raja Khan' age='22'></Person>
+				<Person name='Sakib Khan' age='24'></Person>
+				<Person name='Mina Khan' age='22'></Person>
+			</header>
+		</div>
+	);
+}
+function Users() {
+	const [users, setusers] = useState([]);
+	useEffect(() => {
+		fetch('https://jsonplaceholder.typicode.com/users')
+			.then((res) => res.json())
+			.then((data) => setusers(data));
+	}, []);
+
+	return (
+		<div>
+			<h3>Dynamic User: {users.length} </h3>
 			<ul>
-				{nayoks.map((nayok) => (
-					<li>{nayok}</li>
-				))}
-				,
-				{products.map((product) => (
-					<li>{product.name}</li>
+				{users.map((user) => (
+					<li>{user.name}</li>
 				))}
 			</ul>
-			{/* {products.map((pd) => (
-				<Product product={pd}></Product>
-			))} */}
+		</div>
+	);
+}
+function Counter() {
+	const [count, setcount] = useState(0);
+	const handleIncrease = () => setcount(count + 1);
+	//  {
+	// 	const newCount = count + 1;
+	// 	setcount(newCount);
+	// };
+	const handleDecrease = () => {
+		if (count !== 0) {
+			setcount(count - 1);
+		} else if (count === 0) {
+			alert('Negative Value is not Possible');
+		}
+	};
+	// {
+	// 	const newCount = count - 1;
+	// 	setcount(newCount);
+	// };
 
-			<Product name={products[0].name} price={products[0].price}></Product>
-			<Product name={products[1].name} price={products[1].price}></Product>
-			<Product name={products[2].name} price={products[2].price}></Product>
-			<Person name='Tina Khan' age='20'></Person>
-			<Person name='Raja Khan' age='22'></Person>
-			<Person name='Sakib Khan' age='24'></Person>
-			<Person name='Mina Khan' age='22'></Person>
+	return (
+		<div>
+			<h1>Count: {count}</h1>
+			<button onClick={handleIncrease}>Increase</button>
+			<button onClick={handleDecrease}>Decrease</button>
 		</div>
 	);
 }
